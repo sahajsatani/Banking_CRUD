@@ -112,7 +112,7 @@ public class BankService {
             String name = tempBank.getCustomerName();
             String acc_type = tempBank.getAccountType();
             String balance = String.valueOf(tempBank.getBalance());
-            return "Hi, "+name+". In your Kotak '"+acc_type+"' type account total balance is "+balance+"INR.";
+            return "Hi, "+name+". In your Kotak '"+acc_type+"' type account total balance is "+balance+" INR.";
         }
         else{
             return "Doesn't exist account.";
