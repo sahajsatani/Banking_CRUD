@@ -1,5 +1,8 @@
 package com.bankboot.kotak.controller;
 
+import com.bankboot.kotak.dto.BankDipositWithdraw;
+import com.bankboot.kotak.dto.BankShowDetail;
+import com.bankboot.kotak.dto.BankTransfer;
 import com.bankboot.kotak.model.Bank;
 import com.bankboot.kotak.service.BankService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,22 +34,22 @@ public class BankControler {
 //        return bankService.updateBalanceById(id,amount);
 //    }
     @PutMapping("/deposit")
-    public String depositeBalanceById(@RequestBody Bank bank){
-        return bankService.depositeBalanceById(bank);
+    public String depositeBalanceById(@RequestBody BankDipositWithdraw bankDipositWithdraw){
+        return bankService.depositeBalanceById(bankDipositWithdraw);
     }
 
     @PutMapping("/withdraw")
-    public String withdrawBalanceById(@RequestBody Bank bank){
-        return bankService.withdrawBalanceById(bank);
+    public String withdrawBalanceById(@RequestBody BankDipositWithdraw bankDipositWithdraw){
+        return bankService.withdrawBalanceById(bankDipositWithdraw);
     }
 
     @PutMapping("/transfer")
-    public String transferAmountById(@RequestBody Bank bank){
-        return bankService.transferAmountById(bank);
+    public String transferAmountById(@RequestBody BankTransfer bankTransfer){
+        return bankService.transferAmountById(bankTransfer);
     }
 
     @GetMapping("/show")
-    public String showBalanceById(@RequestBody Bank bank){
-        return bankService.showBalanceById(bank);
+    public String showBalanceById(@RequestBody BankShowDetail bankShowDetail){
+        return bankService.showBalanceById(bankShowDetail);
     }
 }

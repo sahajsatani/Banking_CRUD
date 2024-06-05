@@ -1,5 +1,8 @@
 package com.bankboot.kotak.service;
 
+import com.bankboot.kotak.dto.BankDipositWithdraw;
+import com.bankboot.kotak.dto.BankShowDetail;
+import com.bankboot.kotak.dto.BankTransfer;
 import com.bankboot.kotak.model.Bank;
 import com.bankboot.kotak.repositories.BankRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 @Service
@@ -38,14 +42,14 @@ public class BankService {
         if(Tempage>5 && bank.getBalance()>=1000 && (bank.getAccountType().compareToIgnoreCase("saving")==0 || bank.getAccountType().compareToIgnoreCase("current")==0)) {
             bank.setId(generateUniqueNumber());
             bank.setAge(Tempage);
+            bank.setAccountType(bank.getAccountType().toLowerCase());
             return bankRepo.save(bank);
         }
         else{
             return null;
         }
     }
-    public Bank getCustById(long Id)
-    {
+    public Bank getCustById(long Id) {
         return bankRepo.findById(Id).get();
     }
 
@@ -53,10 +57,10 @@ public class BankService {
         return bankRepo.findByCustomerName(name);
     }
 
-    public String depositeBalanceById(Bank bank) {
-        if(bank!=null){
-            Bank tempBank = getCustById(bank.getId());
-            tempBank.setBalance(tempBank.getBalance() + bank.getBalance());
+    public String depositeBalanceById(BankDipositWithdraw bankDipositWithdraw) {
+        if(bankDipositWithdraw !=null){
+            Bank tempBank = getCustById(bankDipositWithdraw.getId());
+            tempBank.setBalance(tempBank.getBalance() + bankDipositWithdraw.getAmount());
             bankRepo.save(tempBank);
             return "Deposite Completed Successfully";
         }
@@ -65,11 +69,11 @@ public class BankService {
         }
     }
 
-    public String withdrawBalanceById(Bank bank) {
-        if(bank!=null ){
-            Bank tempBank = getCustById(bank.getId());
-            if(bank.getBalance()<=(tempBank.getBalance()-1000)){
-                tempBank.setBalance(tempBank.getBalance()-bank.getBalance());
+    public String withdrawBalanceById(BankDipositWithdraw bankDipositWithdraw) {
+        if(bankDipositWithdraw!=null){
+            Bank tempBank = getCustById(bankDipositWithdraw.getId());
+            if(bankDipositWithdraw.getAmount()<=(tempBank.getBalance()-1000)){
+                tempBank.setBalance(tempBank.getBalance()-bankDipositWithdraw.getAmount());
                 bankRepo.save(tempBank);
                 return "Withdraw Completed Successfully";
             }
@@ -82,16 +86,16 @@ public class BankService {
         }
     }
 
-    public String transferAmountById(Bank bank) {
-        if(bank!=null && bank.getTransferId()!=0){
-            Bank tempBank = getCustById(bank.getId());
-            if(bank.getBalance()<=(tempBank.getBalance()-1000)){
-                tempBank.setBalance(tempBank.getBalance()-bank.getBalance());
+    public String transferAmountById(BankTransfer bankTransfer) {
+        if(bankTransfer!=null && bankTransfer.getToId()!=0){
+            Bank tempBank = getCustById(bankTransfer.getId());
+            if(bankTransfer.getAmount()<=(tempBank.getBalance()-1000)){
+                tempBank.setBalance(tempBank.getBalance()-bankTransfer.getAmount());
                 bankRepo.save(tempBank);
-                tempBank = getCustById(bank.getTransferId());
-                tempBank.setBalance(tempBank.getBalance()+bank.getBalance());
+                tempBank = getCustById(bankTransfer.getToId());
+                tempBank.setBalance(tempBank.getBalance()+bankTransfer.getAmount());
                 bankRepo.save(tempBank);
-                return String.valueOf(bank.getBalance())+" Transaction Completed";
+                return bankTransfer.getAmount()+" Transaction Completed";
             }
             else{
                 return "Transaction Failed";
@@ -102,13 +106,13 @@ public class BankService {
         }
     }
 
-    public String showBalanceById(Bank bank) {
-        if(bank!=null){
-            Bank tempBank = getCustById(bank.getId());
+    public String showBalanceById(BankShowDetail bankShowDetail) {
+        if(bankShowDetail!=null){
+            Bank tempBank = getCustById(bankShowDetail.getId());
             String name = tempBank.getCustomerName();
             String acc_type = tempBank.getAccountType();
             String balance = String.valueOf(tempBank.getBalance());
-            return "Hi, "+name+". In your "+acc_type+" account current balance is "+balance+"INR.";
+            return "Hi, "+name+". In your Kotak '"+acc_type+"' type account total balance is "+balance+"INR.";
         }
         else{
             return "Doesn't exist account.";

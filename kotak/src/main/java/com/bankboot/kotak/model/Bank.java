@@ -32,7 +32,6 @@ public class Bank {
     @Column(name = "custbalance")
     int balance;
 
-    long transferId;
     public Bank setDob(String dob) {
         this.dob = LocalDate.parse(dob);
         return this;

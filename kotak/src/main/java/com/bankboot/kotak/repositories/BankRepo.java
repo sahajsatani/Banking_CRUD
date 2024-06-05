@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface BankRepo extends JpaRepository<Bank,Long> {
-    public List<Bank> findByCustomerName(String name);
+     List<Bank> findByCustomerName(String name);
 
 }
