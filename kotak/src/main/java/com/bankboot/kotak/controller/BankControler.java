@@ -6,6 +6,7 @@ import com.bankboot.kotak.dto.BankTransfer;
 import com.bankboot.kotak.model.Bank;
 import com.bankboot.kotak.service.BankService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,41 +16,43 @@ import java.util.List;
 public class BankControler {
     @Autowired
     private BankService bankService;
+
     @PostMapping("/save")
-    public Bank saveCustByObject(@RequestBody Bank bank){
+    public ResponseEntity<?> saveCustByObject(@RequestBody Bank bank) {
         return bankService.createCustByService(bank);
     }
+
     @GetMapping("/findbyid")
-    public Bank getCustById(@RequestParam long Id){
+    public ResponseEntity<?> getCustById(@RequestParam long Id) {
         return bankService.getCustById(Id);
     }
 
     @GetMapping("/findbyname")
-    public List<Bank> getCustListByName(@RequestParam String name){
+    public ResponseEntity<?> getCustListByName(@RequestParam String name) {
         return bankService.getCustListByName(name);
     }
 
-//    @PutMapping("/deposit")
+    //    @PutMapping("/deposit")
 //    public Bank updateBalanceById(@RequestParam long id,@RequestParam int amount){
 //        return bankService.updateBalanceById(id,amount);
 //    }
     @PutMapping("/deposit")
-    public String depositeBalanceById(@RequestBody BankDipositWithdraw bankDipositWithdraw){
+    public ResponseEntity<?> depositeBalanceById(@RequestBody BankDipositWithdraw bankDipositWithdraw) {
         return bankService.depositeBalanceById(bankDipositWithdraw);
     }
 
     @PutMapping("/withdraw")
-    public String withdrawBalanceById(@RequestBody BankDipositWithdraw bankDipositWithdraw){
+    public ResponseEntity<?> withdrawBalanceById(@RequestBody BankDipositWithdraw bankDipositWithdraw) {
         return bankService.withdrawBalanceById(bankDipositWithdraw);
     }
 
     @PutMapping("/transfer")
-    public String transferAmountById(@RequestBody BankTransfer bankTransfer){
+    public ResponseEntity<?> transferAmountById(@RequestBody BankTransfer bankTransfer) {
         return bankService.transferAmountById(bankTransfer);
     }
 
     @GetMapping("/show")
-    public String showBalanceById(@RequestBody BankShowDetail bankShowDetail){
+    public ResponseEntity<?> showBalanceById(@RequestBody BankShowDetail bankShowDetail) {
         return bankService.showBalanceById(bankShowDetail);
     }
 }

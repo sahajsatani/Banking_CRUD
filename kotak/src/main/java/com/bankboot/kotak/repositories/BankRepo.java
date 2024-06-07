@@ -10,4 +10,6 @@ import java.util.List;
 public interface BankRepo extends JpaRepository<Bank,Long> {
      List<Bank> findByCustomerName(String name);
 
+     Bank getById(long id);
+
 }
